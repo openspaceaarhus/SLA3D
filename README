@@ -5,3 +5,27 @@ There are some wiki pages available here with more info:
 https://github.com/dren-dk/OSAA.LASER/wiki/Overview
 
 Please contact Flemming Frandsen for commit access to the main repository.
+
+Please use only lower case file and directory names, unless the file contains a Java class.
+
+Please do not use any funny characters in files names,
+so a-z, 0-9, . and - are ok, while space, \, /, _ and : are not.
+
+
+highlevel	: PC software
+  webserver : Web interface
+    htdocs  : Client-visible files.
+    src		: Java source tree
+
+  slicer	: The slicer
+  gcoder	: The gcoder
+
+lowlevel	
+  driver	: The near-realtime driver for the PC
+  firmware
+  hw
+  datasheets
+optics
+  
+mechanics
+
