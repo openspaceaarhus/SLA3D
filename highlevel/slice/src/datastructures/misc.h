@@ -20,7 +20,7 @@
 /*                names beginning with "g".  An example of a global */
 /*                variable name is gNewtonsConstant. */
 
-void Assert(int assertion, char* error);
+void Assert(int assertion, const char* error);
 void * SafeMalloc(size_t size);
 
 #endif

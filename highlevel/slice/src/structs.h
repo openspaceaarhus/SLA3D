@@ -38,6 +38,7 @@ typedef struct {
   char bc[2];
 } stl_face;
 
+
 /* link to a IP node, allow for different storage. */
 typedef linkedlistnode IP_node;
 
@@ -73,7 +74,7 @@ typedef struct {
 } slicer;
 
 
-#define EPISILON 1e-8
+#define EPISILON 1e-9
 
 
 #endif /* !STRUCTS_H_ */

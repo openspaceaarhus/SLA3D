@@ -3,7 +3,6 @@
 #include "vec_math.h"
 #include "read_stl.h"
 
-
 line *intersection_line(stl_face *f, float height);
 vec3d get_vector(vertex  v1, vertex v2);
 point *intersects(vec3d start, vec3d direction, float );

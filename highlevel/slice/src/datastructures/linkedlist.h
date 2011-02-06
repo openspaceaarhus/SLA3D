@@ -11,6 +11,7 @@ typedef struct linkedlistnode linkedlistnode;
 
 typedef struct {
   linkedlistnode *first, *last;
+  int size;
 } linkedlist;
 
 linkedlist *linkedlist_make(void);
