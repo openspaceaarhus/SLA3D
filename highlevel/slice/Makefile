@@ -3,7 +3,9 @@ CC := gcc
 LINK := g++
 
 COMMONFLAGS += -Wall
-COMMONFLAGS += -lm	
+COMMONFLAGS += -Werror
+COMMONFLAGS += -lm
+CFLAGS += -std=gnu99
 
 
 # Common flags
@@ -32,10 +34,10 @@ LFLAGS += $(COMMONFLAGS)
 
 
 ##the common objects to build
-OBJS = read_stl.c main.c vec_math.c intersections.c svg.c	\
-datastructures/red_black_tree.c datastructures/misc.c		\
-datastructures/stack.c intersectplane.c event_queue.c		\
-datastructures/linkedlist.c
+OBJS = read_stl.cpp main.cpp vec_math.cpp intersections.cpp svg.cpp	\
+datastructures/red_black_tree.cpp datastructures/misc.cpp		\
+datastructures/stack.cpp intersectplane.cpp event_queue.cpp		\
+datastructures/linkedlist.cpp Layer.cpp
 
 EXEC = slice
 
