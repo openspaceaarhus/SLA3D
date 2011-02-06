@@ -1,0 +1,17 @@
+THIS IS A WORK IN PROGRESS
+
+It should be rewritten to fit into the CGAL framework at some time.
+
+However for now it does seem to work and with the following todos
+implemeted it ought to be able to output polygons as CCW and CW lists
+of points
+
+1. utilize normal vector from STL to determine start and end point of segment
+
+2. sticth together segments
+An important note is that points really ought to be exactly the same place, 
+the intersection points should be calculated from the same vertices, albeit twice.
+
+
+
+
