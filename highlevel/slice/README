@@ -13,5 +13,16 @@ An important note is that points really ought to be exactly the same place,
 the intersection points should be calculated from the same vertices, albeit twice.
 
 
+It works now for single simple polygons.
+
+It is a c program brutally converted to c++ 
+
+Layer does the slicing
+
+However there are some c code with a scanplane st we don;t need to
+consider all triangles when slicing. 
+
+
+There is i TODO file ...
 
 
