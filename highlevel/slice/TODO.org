@@ -1,0 +1,28 @@
+
+* numerical fun
+  floats are not good enoug for internal processing
+
+  MUST USE std::abs to get double precission in abs AAARGH
+
+* create CCW 2d polygons from a slice
+
+* create CCW 2d polygons from a SVG
+
+
+* Dream up some anotated 2d polygon format to specify the intensity of ze lazer
+
+  
+
+* USE cgal!
+  
+
+** Start with inset / outsets
+
+** hachtning
+
+** possible rewrite slicer utilizing cgal
+
+* generate GCODE
+
+* load property file
+  find a library or implement an ugly parser
