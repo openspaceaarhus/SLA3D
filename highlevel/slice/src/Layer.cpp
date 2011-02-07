@@ -3,22 +3,22 @@
 #include "Layer.h"			
 #include "intersections.h"
 #include "svg.h"
+#include <cmath>
+#include <assert.h>
 
 Layer::Layer(linkedlist *ll, float height) {
   candidates = ll;
   this->height = height;
   // init the datastructures
   poly = new std::vector< std::vector<point*> >;
-
   segments = new std::vector<line*>;
   
   create_segments();
-  dump_segments("debug");
   create_polys();
 }
 
 Layer::~Layer() {
-  // TODO is this alright?
+  // TODO is this alright? or should it iterate throug the polys?
   delete segments;
   delete poly;
 }
@@ -26,14 +26,17 @@ Layer::~Layer() {
 
 // todo move somewhere nice
 bool point_compare(point p1, point p2) {
-  return abs(p1.x-p2.x) < EPISILON &&
-    abs(p1.y-p2.y) < EPISILON;
+  double xs = p1.x-p2.x ;
+  double ys = p1.y-p2.y ;
+  xs = std::abs(xs);
+  ys = std::abs(ys);
+  return  (xs < EPSILON) && (ys < EPSILON);
 }
 
 
 
 // find the cycles representing each polygon in the layer
-// this is a naive O(n^2) implementaion, it will benefit gratly from a scanline aproach
+// this is a naive O(n^2) implementaion, it will benefit greatly from a scanline aproach
 void Layer::create_polys() {
   
   std::vector<line*> candidates (segments->begin(), segments->end());
@@ -42,6 +45,10 @@ void Layer::create_polys() {
     line *cur_start = candidates.at(0);
     point *poly_start = &(cur_start->p1);
     point *look_for = &(cur_start->p2);
+    
+    // REMOVE the start poly from the candidates
+    candidates.erase(candidates.begin());
+    
     std::vector<point*> *cur_poly = new std::vector<point*>;
     cur_poly->push_back(poly_start);
 
@@ -61,11 +68,9 @@ void Layer::create_polys() {
 	}
       }
     }
+    // there should be a cycle, insert look_for ? and
     poly->push_back(*cur_poly);
   }
-  
-
-
 }
 
 /* utilise normal from stl face to order the segment correctly */
@@ -82,15 +87,21 @@ void Layer::create_segments() {
     if (l == 0)
       continue;
 
-    // FATAL FIXME THIS IS WRONG !!!!!!
 
     // the vector from p1 to p2
     const point p1p2 = {l->p2.x - l->p1.x, l->p2.y - l->p1.y};
+
+    // should to short segments be skipped?, yes
+    if (std::abs(p1p2.x * p1p2.x + p1p2.y * p1p2.y) < EPSILON * EPSILON) 
+      continue;
+
+    assert(std::abs(p1p2.x * p1p2.x + p1p2.y * p1p2.y) > EPSILON*EPSILON);
     // project onto zx plane, and well call z for y 
     const point normal = {f->normal.x, f->normal.z}; 
+    assert(std::abs(normal.x * normal.x + normal.y * normal.y) > EPSILON*EPSILON);
 
     // we can calculate this as z = 0;
-    float cross = p1p2.x*normal.x - p1p2.y * normal.y; 
+    float cross = p1p2.x*normal.y - p1p2.y * normal.x; 
     // change the order so we are sure that p1 is the first point in a CCW polygon
     if (cross < 0) {
       /* swap p1 and p2 */
@@ -143,6 +154,24 @@ void Layer::dump_segments(const char *filename) {
 
 // saves the points
 void Layer::save_pts(const char *filename) {
+
+ FILE *f;
+  
+ f = fopen(filename, "w");
+ fprintf(f, "#slice in for height=%f %d segments as CCW polygons\n", height, segments->size());
+  
+ int poly_no = 1;
+ for(std::vector< std::vector<point*> >::iterator it = poly->begin(); it != poly->end(); it++) {
+   fprintf(f, "# polygon %d\n", poly_no++);
+     std::vector<point*> cycle  = *it;
+     for(std::vector<point*>::iterator jt = cycle.begin(); jt != cycle.end(); jt++) {
+       point *p = *jt;
+       fprintf(f, "%f %f\n", p->x, p->y);
+     }
+ }
+
+  fclose(f);
+
 
 
 }

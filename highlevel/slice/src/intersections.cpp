@@ -48,8 +48,8 @@ point *intersection(vec3d start, vec3d v, float height) {
 
   /* do some checking.... */
 
-  if (fabs(denom) < EPISILON) {
-    if (fabs(nom) < EPISILON) {
+  if (fabs(denom) < EPSILON) {
+    if (fabs(nom) < EPSILON) {
       /* line lies within the plane */
       return get_point_in_2d(start);
     }
@@ -59,7 +59,7 @@ point *intersection(vec3d start, vec3d v, float height) {
 
   d = nom/denom;
   /* printf("nom/denom = %f\n", d); */
-  if (d < EPISILON || d > (len+ EPISILON))
+  if (d < EPSILON || d > (len+ EPSILON))
     return NULL;
 
   vec3d res;

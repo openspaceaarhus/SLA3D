@@ -67,6 +67,9 @@ int main(int argc, char**args) {
     L.save_svg(buf);
     sprintf(buf, "%s%05d.segs", "dumps", slice_number);
     L.dump_segments(buf);
+    sprintf(buf, "%s%05d.pts", "points", slice_number);
+    L.save_pts(buf);
+
     slice_number++;
     height = slicern->bounding_box.min.y + slice_dist*slice_number; 
   }

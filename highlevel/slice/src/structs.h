@@ -74,7 +74,7 @@ typedef struct {
 } slicer;
 
 
-#define EPISILON 1e-9
+#define EPSILON 1e-9
 
 
 #endif /* !STRUCTS_H_ */

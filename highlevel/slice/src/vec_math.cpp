@@ -75,9 +75,9 @@ vec3d vec3d_normalize(vec3d v) {
 }
 
 char vec3d_zero(vec3d v) {
-  return fabs(v.x)<EPISILON &&
-    fabs(v.y)<EPISILON &&
-    fabs(v.z)<EPISILON;
+  return fabs(v.x)<EPSILON &&
+    fabs(v.y)<EPSILON &&
+    fabs(v.z)<EPSILON;
 }
 
 char vec3d_compare(vec3d v, vec3d u) {

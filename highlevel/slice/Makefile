@@ -4,7 +4,7 @@ LINK := g++
 
 COMMONFLAGS += -Wall
 COMMONFLAGS += -Werror
-COMMONFLAGS += -lm
+#COMMONFLAGS += -lm
 CFLAGS += -std=gnu99
 
 
