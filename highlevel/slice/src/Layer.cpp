@@ -33,6 +33,11 @@ bool point_compare(point p1, point p2) {
   return  (xs < EPSILON) && (ys < EPSILON);
 }
 
+double point_distSQ(point p1, point p2) {
+  double xs = p1.x-p2.x ;
+  double ys = p1.y-p2.y ;
+  return xs*xs + ys*ys;
+}
 
 
 // find the cycles representing each polygon in the layer
@@ -54,7 +59,10 @@ void Layer::create_polys() {
 
     // follow this polygon around
     while ( !point_compare(*look_for, *poly_start) ) {
-
+      // If there are not exact match we have to find a best match
+      int closest_idx = -42;
+      double closest_distanceSQ = 42;
+      int cur_idx=0;
       for(std::vector<line*>::iterator it = candidates.begin(); it != candidates.end(); it++) { 
 	line *l = *it;
 	if (point_compare(l->p1, *look_for)) {
@@ -64,9 +72,25 @@ void Layer::create_polys() {
 	  look_for = &(l->p2);
 	  // never look at this again.
 	  candidates.erase(it);
+	  closest_distanceSQ = 0.0;
+	  closest_idx = cur_idx;
 	  break;
 	}
+	double cur_disSQ = point_distSQ(*look_for, l->p1);
+	if (cur_disSQ < closest_distanceSQ )  {
+	  closest_idx = cur_idx;
+	  closest_distanceSQ = cur_disSQ;
+	}
+	cur_idx++;
+	
       }
+      if (closest_distanceSQ != 0.0) {
+	// we did not find a match take the best..
+	printf("not exact match\n");
+	*look_for = candidates[closest_idx]->p2;
+	candidates.erase(candidates.begin()+closest_idx);
+      }
+
     }
     // there should be a cycle, insert look_for ? and
     poly->push_back(*cur_poly);
@@ -81,19 +105,26 @@ void Layer::create_polys() {
 /* P1 ------------------> P2   */
 // CCW means that in this example we must swap p1 and p2
 void Layer::create_segments() {
+  
+  int skipped = 0, no_intersect=0;
+  
   for(linkedlistnode *it = candidates->first; it != NULL; it = it->next ) {
     stl_face *f = (stl_face*) it->payload;
     line *l = intersection_line(f, this->height);
-    if (l == 0)
+    if (l == 0) {
+      no_intersect++;
       continue;
-
+    }
 
     // the vector from p1 to p2
     const point p1p2 = {l->p2.x - l->p1.x, l->p2.y - l->p1.y};
 
     // should to short segments be skipped?, yes
-    if (std::abs(p1p2.x * p1p2.x + p1p2.y * p1p2.y) < EPSILON * EPSILON) 
+    if (std::abs(p1p2.x * p1p2.x + p1p2.y * p1p2.y) < EPSILON * EPSILON) {
+      skipped++;
       continue;
+    }
+
 
     assert(std::abs(p1p2.x * p1p2.x + p1p2.y * p1p2.y) > EPSILON*EPSILON);
     // project onto zx plane, and well call z for y 
@@ -111,6 +142,8 @@ void Layer::create_segments() {
     }
     segments->push_back(l);
   }
+
+  printf("skipping %d short segments and %d none intersecting \n", skipped, no_intersect);
 }
 
 // generate a svg			

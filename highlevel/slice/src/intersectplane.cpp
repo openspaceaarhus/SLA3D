@@ -102,7 +102,12 @@ void insert_ev_points(event_queue *Q, stl_face *f) {
 
 void add_face_toQ(slicer *slicer, stl_face face) {
   stl_face *f;
-  /* TODO dont put parallel faces in queue */
+  /* TODO make sure that this is correct */
+//   if ( abs(face.normal.x) < EPSILON && abs(face.normal.z) < EPSILON) {
+// //     printf("dead normal\n");
+//     return;
+//   }
+
   f = (stl_face*) SafeMalloc(sizeof(stl_face));
   *f = face;
   sort_vertexes(f);
