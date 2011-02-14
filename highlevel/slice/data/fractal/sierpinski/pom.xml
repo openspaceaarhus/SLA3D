@@ -18,7 +18,7 @@
     
     <scm>
         <connection>https://github.com/xylifyx/OSAA.LASER.git</connection>
-        <developerConnection>scm:git:github.com:xylifyx/OSAA.LASER.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:xylifyx/OSAA.LASER.git</developerConnection>
     </scm>
     
     <build>
